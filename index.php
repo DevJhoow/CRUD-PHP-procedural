@@ -156,46 +156,69 @@
 							</tr>
 							</thead>
 							
-							<tbody>
 							<?php
-								require_once './src/exibir.php';
+							// mostrar mensagem de sucesso ao deletar
+							if (isset($_GET['msg']) && $_GET['msg'] == 'deletado'): ?>
+								<div class="alert alert-danger text-center" id="msg-deletado">
+									Registro deletado com sucesso!
+								</div>
+							<?php endif; ?>
 
-								while($pessoa = $dados->fetch_assoc()) : 
+							<tbody>
 
-								$data_formatada = date("d/m/Y", strtotime($pessoa['data']));
-								$telefone_formatado = formatar_telefone($pessoa['telefone']);
-								$nome_formatado = formatar_nome($pessoa['nome']);
-   							    $sobrenome_formatado = formatar_nome($pessoa['sobrenome']);
-							?>
+								<?php
+									require_once './src/exibir.php';
 
-								<tr>
-									<td><?= $pessoa['id'] ?></td>
-									<td><?= $nome_formatado ?></td>
-									<td><?= $sobrenome_formatado ?></td>
-									<td><?= $telefone_formatado ?></td>
-									<td><?= $pessoa['email'] ?></td>
-									<td><?= $data_formatada ?></td>
-									
-									<td>
-									<a href="#" class="btn btn-sm btn-warning me-1">
-										<i class="fa-solid fa-pen"></i> Editar
-									</a>
-									<a href="#" class="btn btn-sm btn-danger">
-										<i class="fa-solid fa-trash"></i> Excluir
-									</a>
-									</td>
-								</tr>
-							<?php endwhile ;?>
+									while($pessoa = $dados->fetch_assoc()) : 
+
+									$data_formatada = date("d/m/Y", strtotime($pessoa['data']));
+									$telefone_formatado = formatar_telefone($pessoa['telefone']);
+									$nome_formatado = formatar_nome($pessoa['nome']);
+									$sobrenome_formatado = formatar_nome($pessoa['sobrenome']);
+								?>
+
+									<tr>
+										<td><?= $pessoa['id'] ?></td>
+										<td><?= $nome_formatado ?></td>
+										<td><?= $sobrenome_formatado ?></td>
+										<td><?= $telefone_formatado ?></td>
+										<td><?= $pessoa['email'] ?></td>
+										<td><?= $data_formatada ?></td>
+										
+										<td>
+										<!-- EDITAR -->
+										<a href="#" class="btn btn-sm btn-warning me-1">
+											<i class="fa-solid fa-pen"></i> Editar
+										</a>
+										<!-- DELETAR -->
+										<a href="src/deletar.php?id=<?php echo $pessoa['id']; ?>" class="btn btn-sm btn-danger"
+											onclick="return confirm('Tem certeza que deseja deletar?');">
+												<i class="fa-solid fa-trash"></i> Excluir
+										</a>
+										</td>
+									</tr>
+								<?php endwhile ;?>
 
 							</tbody>
-						</table>
+							</table>
+							</div>
+							<?php
+							if ($dados->num_rows === 0):
+							?>
+								<div class="text-center py-5">
+									<i class="fa-solid fa-box-open fa-4x text-muted mb-3"></i>
+									<h3 class="text-muted">Nenhum registro encontrado</h3>
+									<p class="text-muted">Ainda não há pessoas cadastradas no sistema.</p>
+								</div>
+
+							<?php
+							// impedir a tabela de aparecer:
+							endif;
+							?>
 						</div>
-					</div>
-					</section>
+						</section>
 
-
-
-				<!-- About Me -->
+					<!-- About Me -->
 					<section id="about" class="three">
 						<div class="container">
 
