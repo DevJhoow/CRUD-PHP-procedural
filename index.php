@@ -156,6 +156,14 @@
 							</tr>
 							</thead>
 							
+							<?php 
+							// mostrar mensagem de sucesso ao Editar
+							if (isset($_GET['msg']) && $_GET['msg'] == 'atualizado'): ?>
+								<div class="alert alert-warning text-center" id="msg-editado">
+									Registro atualizado com sucesso!
+								</div>
+							<?php endif; ?>
+
 							<?php
 							// mostrar mensagem de sucesso ao deletar
 							if (isset($_GET['msg']) && $_GET['msg'] == 'deletado'): ?>
@@ -187,9 +195,10 @@
 										
 										<td>
 										<!-- EDITAR -->
-										<a href="#" class="btn btn-sm btn-warning me-1">
+										<a href="src/editar.php?id=<?= $pessoa['id'] ?>" class="btn btn-sm btn-warning me-1">
 											<i class="fa-solid fa-pen"></i> Editar
 										</a>
+
 										<!-- DELETAR -->
 										<a href="src/deletar.php?id=<?php echo $pessoa['id']; ?>" class="btn btn-sm btn-danger"
 											onclick="return confirm('Tem certeza que deseja deletar?');">
@@ -285,5 +294,23 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
+			<!-- funcoes para abrir e fechar o modal  -->
+			<script>
+				function abrirModalEditar(id) {
+
+					document.getElementById('modalEditar').style.display = 'flex';
+
+					// carrega o form-editar.php dentro do modal
+					fetch("src/form-editar.php?id=" + id)
+						.then(response => response.text())
+						.then(html => {
+							document.getElementById('conteudoModalEditar').innerHTML = html;
+						});
+				}
+
+				function fecharModal() {
+					document.getElementById('modalEditar').style.display = 'none';
+				}
+			</script>
 	</body>
 </html>
